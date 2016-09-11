@@ -16,7 +16,7 @@ import { title, html } from './index.md';
 class HomePage extends React.Component {
 
   static propTypes = {
-    articles: PropTypes.array.isRequired,
+    articles: PropTypes.array,
   };
 
   componentDidMount() {
@@ -26,7 +26,6 @@ class HomePage extends React.Component {
   render() {
     return (
       <Layout className={s.content}>
-        <div dangerouslySetInnerHTML={{ __html: html }} />
         <h4>Articles</h4>
         <ul>
           {this.props.articles.map((article, i) =>
