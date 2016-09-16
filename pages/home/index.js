@@ -10,29 +10,28 @@
 
 import React, { PropTypes } from 'react';
 import Layout from '../../components/Layout';
-import s from './styles.css';
-import { title, html } from './index.md';
+import HomeSidebar from './HomeSidebar';
+import classNames from 'classnames';
+import styles from './styles.css';
 
 class HomePage extends React.Component {
 
-  static propTypes = {
-    articles: PropTypes.array,
-  };
-
   componentDidMount() {
-    document.title = title;
+    document.title = 'Pegabus - Mapa de ônibus';
   }
 
   render() {
     return (
-      <Layout className={s.content}>
-        <h4>Articles</h4>
-        <ul>
-        </ul>
-        <p>
-          <br /><br />
-        </p>
-      </Layout>
+        <Layout className={styles.content}>
+            <div className='columns'>
+                <HomeSidebar/>
+                <div className="column is-offset-3">
+                    <h1>HOME</h1>
+                    <hr/>
+                    
+                </div>
+            </div>
+        </Layout>
     );
   }
 

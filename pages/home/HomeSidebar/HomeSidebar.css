@@ -1,0 +1,31 @@
+.sidebar {
+    position: absolute;
+    height: 90%;
+    background: #fff;
+}
+
+.sidebar__header {
+    padding: 20px;
+    border-bottom: solid 1px #eee;
+}
+.sidebar__results {
+    overflow-y: show;
+}
+
+.sidebar__search_input {
+    background: #eee;
+    border: none;
+    width: 100%;
+    padding: 10px 20px;
+    outline: none;
+    border-radius: 5px;
+    color: #111;
+}
+
+.sidebar__search_input::before {
+    content: "\f207";
+    font-family: FontAwesome;
+    display: block;
+    color: #000;
+    margin: 10px;
+}
