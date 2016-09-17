@@ -13,6 +13,7 @@ import Layout from '../../components/Layout';
 import HomeSidebar from './HomeSidebar';
 import classNames from 'classnames';
 import styles from './styles.css';
+import HomeMap from './HomeMap';
 
 class HomePage extends React.Component {
 
@@ -28,7 +29,7 @@ class HomePage extends React.Component {
                 <div className="column is-offset-3">
                     <h1>HOME</h1>
                     <hr/>
-                    
+                    <HomeMap/>
                 </div>
             </div>
         </Layout>
