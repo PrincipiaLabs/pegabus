@@ -12,6 +12,7 @@ import React, { PropTypes } from 'react';
 import styles from './HomeMap.css';
 import classNames from 'classnames';
 import GoogleMap from 'google-map-react';
+import Stops from '../Stops';
 
 export default class HomeSidebar extends React.Component {
 
@@ -19,25 +20,55 @@ export default class HomeSidebar extends React.Component {
         options: {
             key: 'AIzaSyB_Im8QJE25qpMS-ab8SmapTuPq8tRJF2I',
             language: 'pt-br'
-        }
+        },
+        location: {
+            lat: -5.0855827,
+            lng: -42.8034291
+        },
+        markers: [
+            <Stops lat={-5.0855827} lng={-42.8034291} text={'A'}/>,
+            <Stops lat={-5.0859867} lng={-42.8024221} text={'B'}/>
+        ]
     }
 
     constructor(props){
         super(props);
+
         this.state = {
-            center: {lat: 59.938043, lng: 30.337157},
-            zoom: 9,
+            center: props.location,
+            zoom: 15,
         };
     }
+    
+    changeLocation(lat, lng){
+        this.setState({
+            center: { lat: lat, lng: lng }
+        });
+    }
+
+    componentWillMount(){
+        if( window.navigator.geolocation ){
+            navigator.geolocation.getCurrentPosition( (position) => {
+                if( position.coords )
+                    this.changeLocation(
+                        position.coords.latitude,
+                        position.coords.longitude
+                    );
+            });
+        }
+    }
+
 
     render() {
     return (
         <div className={styles.map_container}>
             <GoogleMap
                 bootstrapURLKeys={this.props.options}
-                defaultCenter={this.state.center}
+                defaultCenter={this.props.location}
+                center={this.state.center}
                 defaultZoom={this.state.zoom}
             >
+            {this.props.markers}
             </GoogleMap>
         </div>
     );
