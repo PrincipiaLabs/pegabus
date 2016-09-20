@@ -39,7 +39,7 @@ export default class HomeSidebar extends React.Component {
             zoom: 15,
         };
     }
-    
+
     changeLocation(lat, lng){
         this.setState({
             center: { lat: lat, lng: lng }
