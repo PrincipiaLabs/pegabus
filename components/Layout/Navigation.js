@@ -10,16 +10,18 @@
 
 import React from 'react';
 import Link from '../Link';
+import styles from './Navigation.css';
+import classNames from 'classnames';
 
 class Navigation extends React.Component {
   render() {
     return (
-       <div className="nav-right nav-menu">
-          <Link className="nav-item" to="/">Mapa</Link>
-          <Link className="nav-item" to="/about">Sobre nós</Link>
+       <div className={classNames('nav-right nav-menu', styles.content)}>
+          <Link className={classNames('nav-item', styles.item)} to="/">Mapa</Link>
+          <Link className={classNames('nav-item', styles.item)} to="/about">Sobre nós</Link>
 
           <span className="nav-item">
-            <Link className="button" to="/">
+            <Link className={classNames('button',styles.button)} to="/">
               <span>Ajude-nos</span>
             </Link>
           </span>

@@ -11,32 +11,90 @@
 import React, { PropTypes } from 'react';
 import styles from './HomeSidebar.css';
 import classNames from 'classnames';
+import { Buses } from '../../../core/database.js';
+import _ from 'lodash';
+import fetch from 'isomorphic-fetch';
 
 export default class HomeSidebar extends React.Component {
 
     constructor( props ){
         super(props);
         this.state = {
-            search: '',
+            search: props.search,
             results: [
                 { number: 723, name: 'Rodoviária Circular' },
-                { number: 327, name: 'Rodoviária Circular II'}
+                { number: 327, name: 'Rodoviária Circular II'  }
             ]
         };
+    }
+
+    updateResults(){
+        const searchs = new RegExp(this.state.search, 'ig');
+        
+        Buses.allDocs({
+            include_docs: true
+        }).then((results) => {
+            let data = _.map(results.rows || [], (doc) => doc = doc.doc );
+
+            data = _.filter(data, (doc) =>
+                ( searchs.test(doc.name) || searchs.test(doc._id) )
+            );
+
+            this.setState({
+                results: data
+            });
+        });
+    }
+
+    fetchResults(value){
+        if( !value ) return;
+
+        fetch(`http://localhost:8000/api/v1/bus/search/${value}`)
+        .then(response => response.json())
+        .then(json => {
+            if( !json.error ){
+                _.each(json.data, (doc) => {
+                    Buses.put({
+                        _id: doc.code,
+                        name: doc.name
+                    });
+                });
+                this.updateResults();
+            }
+        });
+    }
+
+    handleSearch(event){
+        const value = event.currentTarget.value;
+
+        this.setState({
+            search: value
+        });
+
+        this.updateResults();
+        this.fetchResults(value);
+    }
+    componentDidMount(){
+        this.updateResults();
     }
 
     render() {
     return (
         <div className={classNames('column is-one-quarter', styles.sidebar)}>
             <div className={ styles.sidebar__header}>
-                <input value={this.state.search} placeholder="Procure um ônibus" className={ styles.sidebar__search_input }/>
+                <input
+                    value={this.state.search}
+                    onChange={this.handleSearch.bind(this)}
+                    placeholder="Procure um ônibus"
+                    className={ styles.sidebar__search_input }
+                />
             </div>
             <div className={ styles.sidebar__results }>
                 <table>
                 {this.state.results.map(
                     (props, i) =>
                         (<tr key={i}>
-                            <td>{props.number}</td>
+                            <td>{props._id}</td>
                             <td>{props.name}</td>
                         </tr>)
                 )}
