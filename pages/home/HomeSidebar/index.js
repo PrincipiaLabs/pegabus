@@ -30,7 +30,7 @@ export default class HomeSidebar extends React.Component {
 
     updateResults(){
         const searchs = new RegExp(this.state.search, 'ig');
-        
+
         Buses.allDocs({
             include_docs: true
         }).then((results) => {
@@ -90,15 +90,22 @@ export default class HomeSidebar extends React.Component {
                 />
             </div>
             <div className={ styles.sidebar__results }>
-                <table>
                 {this.state.results.map(
                     (props, i) =>
-                        (<tr key={i}>
-                            <td>{props._id}</td>
-                            <td>{props.name}</td>
-                        </tr>)
-                )}
-                </table>
+                        (
+                        <div className={ styles.sidebar__result_item } key={i}>
+                            <div className='columns'>
+                                <div className='column is-4'>
+                                    <h1 className={styles.sidebar__result_title}>{props._id}</h1>
+                                </div>
+                                <div className='column is-8'>
+                                    <p>{props.name}</p>
+                                </div>
+                            </div>
+                        </div>
+                        )
+                    )
+                }
             </div>
         </div>
     );
