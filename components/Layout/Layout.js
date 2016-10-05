@@ -11,7 +11,7 @@
 import React, { PropTypes } from 'react';
 import cx from 'classnames';
 import Header from './Header';
-import Footer from '../Footer';
+//import Footer from '../Footer';
 import s from './Layout.css';
 
 class Layout extends React.Component {
@@ -25,8 +25,7 @@ class Layout extends React.Component {
       <div className="root">
         <Header />
         <main>
-          <div {...this.props} className={this.props.className} />
-        <Footer />
+        <div {...this.props} className={this.props.className} />
         </main>
       </div>
     );

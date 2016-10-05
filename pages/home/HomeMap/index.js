@@ -13,8 +13,9 @@ import styles from './HomeMap.css';
 import classNames from 'classnames';
 import GoogleMap from 'google-map-react';
 import Stops from '../Stops';
+import { StopsDB } from '../../../core/database.js';
 
-export default class HomeSidebar extends React.Component {
+export default class HomeMap extends React.Component {
 
     static defaultProps = {
         options: {
@@ -29,6 +30,7 @@ export default class HomeSidebar extends React.Component {
             <Stops lat={-5.0855827} lng={-42.8034291} text={'A'}/>,
             <Stops lat={-5.0859867} lng={-42.8024221} text={'B'}/>
         ]
+        ,zoom: 15,
     }
 
     constructor(props){
@@ -37,6 +39,7 @@ export default class HomeSidebar extends React.Component {
         this.state = {
             center: props.location,
             zoom: 15,
+            stops: props.markers
         };
     }
 
@@ -46,8 +49,12 @@ export default class HomeSidebar extends React.Component {
         });
     }
 
+    handleChange({ center }){
+        console.log(center);
+    }
+
     componentWillMount(){
-        if( window.navigator.geolocation ){
+       /* if( window.navigator.geolocation ){
             navigator.geolocation.getCurrentPosition( (position) => {
                 if( position.coords )
                     this.changeLocation(
@@ -55,7 +62,7 @@ export default class HomeSidebar extends React.Component {
                         position.coords.longitude
                     );
             });
-        }
+        }*/
     }
 
 
@@ -65,10 +72,11 @@ export default class HomeSidebar extends React.Component {
             <GoogleMap
                 bootstrapURLKeys={this.props.options}
                 defaultCenter={this.props.location}
-                center={this.state.center}
-                defaultZoom={this.state.zoom}
+                defaultZoom={this.props.zoom}
+                zoom={this.props.zoom}
+                onChange={this.handleChange.bind(this)}
             >
-            {this.props.markers}
+            {this.state.stops}
             </GoogleMap>
         </div>
     );

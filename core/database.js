@@ -1,4 +1,4 @@
 import PouchDB from 'pouchdb';
 
-export const Buses = new PouchDB('pegabus.bus');
-export const Stops = new PouchDB('pegabus.stops');
+export const BusesDB = new PouchDB('pegabus.bus');
+export const StopsDB = new PouchDB('pegabus.stops');

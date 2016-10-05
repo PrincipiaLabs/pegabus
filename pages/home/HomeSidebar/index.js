@@ -1,19 +1,9 @@
-/**
- * React Static Boilerplate
- * https://github.com/kriasoft/react-static-boilerplate
- *
- * Copyright © 2015-present Kriasoft, LLC. All rights reserved.
- *
- * This source code is licensed under the MIT license found in the
- * LICENSE.txt file in the root directory of this source tree.
- */
-
 import React, { PropTypes } from 'react';
+import HomeSidebarItem from '../HomeSidebarItem';
 import styles from './HomeSidebar.css';
 import classNames from 'classnames';
-import { Buses } from '../../../core/database.js';
 import _ from 'lodash';
-import fetch from 'isomorphic-fetch';
+import Strans from '../../../core/strans.js';
 
 export default class HomeSidebar extends React.Component {
 
@@ -28,18 +18,8 @@ export default class HomeSidebar extends React.Component {
         };
     }
 
-    updateResults(){
-        const searchs = new RegExp(this.state.search, 'ig');
-
-        Buses.allDocs({
-            include_docs: true
-        }).then((results) => {
-            let data = _.map(results.rows || [], (doc) => doc = doc.doc );
-
-            data = _.filter(data, (doc) =>
-                ( searchs.test(doc.name) || searchs.test(doc._id) )
-            );
-
+    updateResults(value){
+        Strans.getBuses(value, (data) => {
             this.setState({
                 results: data
             });
@@ -49,18 +29,8 @@ export default class HomeSidebar extends React.Component {
     fetchResults(value){
         if( !value ) return;
 
-        fetch(`http://localhost:8000/api/v1/bus/search/${value}`)
-        .then(response => response.json())
-        .then(json => {
-            if( !json.error ){
-                _.each(json.data, (doc) => {
-                    Buses.put({
-                        _id: doc.code,
-                        name: doc.name
-                    });
-                });
-                this.updateResults();
-            }
+        Strans.fetchBuses(value, () => {
+            this.updateResults(value);
         });
     }
 
@@ -90,20 +60,9 @@ export default class HomeSidebar extends React.Component {
                 />
             </div>
             <div className={ styles.sidebar__results }>
-                {this.state.results.map(
-                    (props, i) =>
-                        (
-                        <div className={ styles.sidebar__result_item } key={i}>
-                            <div className='columns'>
-                                <div className='column is-4'>
-                                    <h1 className={styles.sidebar__result_title}>{props._id}</h1>
-                                </div>
-                                <div className='column is-8'>
-                                    <p>{props.name}</p>
-                                </div>
-                            </div>
-                        </div>
-                        )
+                {
+                    this.state.results.map(
+                        (props, i) => <HomeSidebarItem {...props} key={i}/>
                     )
                 }
             </div>

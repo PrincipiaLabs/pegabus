@@ -1,5 +1,6 @@
 .sidebar {
-    padding: 0px;
+    margin-top: -54px;
+    padding: 54px 0 0 0;
     position: absolute;
     height: 100%;
     background: #fff;
@@ -36,6 +37,7 @@
     width: 100%;
     border-bottom: solid 1px #eee;
     padding: 20px;
+    cursor: pointer;
 }
 
 .sidebar__result_title {
