@@ -9,7 +9,7 @@ export default class Stops extends React.Component {
             console.log("HOVVEEEEERRR!");
 
         return (
-            <div className={styles.stop}>{this.props.text}</div>
+            <div className={styles.stop}>{this.props.name}</div>
         );
     }
 }

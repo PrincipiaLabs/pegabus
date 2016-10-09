@@ -2,10 +2,11 @@ import React, { PropTypes } from 'react';
 import styles from './HomeSidebarItem.css';
 import classNames from 'classnames';
 import { BusesDB } from '../../../core/database.js';
+import Strans from '../../../core/strans.js';
+import { connect } from 'react-redux';
 import _ from 'lodash';
-//import fetch from 'isomorphic-fetch';
 
-export default class HomeSidebarItem extends React.Component {
+class HomeSidebarItem extends React.Component {
 
     static defaultProps = {
         _id: '2523452',
@@ -13,7 +14,10 @@ export default class HomeSidebarItem extends React.Component {
     };
 
     handleClick(){
-        console.log(this, 'hufahduadfhaudf');
+        Strans.fetchBus(this.props._id, (bus) => {
+            console.log(bus._id);
+            this.props.selectBus(bus);
+        });
     }
 
     render(){
@@ -32,3 +36,22 @@ export default class HomeSidebarItem extends React.Component {
         );
     }
 }
+const mapStateToProps = (state) => {
+    return {};
+};
+
+const mapDispatchToProps = (dispatch) => {
+    return {
+        selectBus: (bus) => {
+            dispatch({
+                type: 'SELECT_BUS',
+                data: bus
+            });
+        }
+    };
+};
+
+export default connect(
+    mapStateToProps,
+    mapDispatchToProps,
+)(HomeSidebarItem);

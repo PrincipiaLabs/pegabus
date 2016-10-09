@@ -1,21 +1,13 @@
-/**
- * React Static Boilerplate
- * https://github.com/kriasoft/react-static-boilerplate
- *
- * Copyright © 2015-present Kriasoft, LLC. All rights reserved.
- *
- * This source code is licensed under the MIT license found in the
- * LICENSE.txt file in the root directory of this source tree.
- */
-
 import React, { PropTypes } from 'react';
-import styles from './HomeMap.css';
+import { connect  } from 'react-redux';
 import classNames from 'classnames';
 import GoogleMap from 'google-map-react';
+
+import styles from './HomeMap.css';
 import Stops from '../Stops';
 import { StopsDB } from '../../../core/database.js';
 
-export default class HomeMap extends React.Component {
+class HomeMap extends React.Component {
 
     static defaultProps = {
         options: {
@@ -26,9 +18,9 @@ export default class HomeMap extends React.Component {
             lat: -5.0855827,
             lng: -42.8034291
         },
-        markers: [
-            <Stops lat={-5.0855827} lng={-42.8034291} text={'A'}/>,
-            <Stops lat={-5.0859867} lng={-42.8024221} text={'B'}/>
+        stops: [
+            { lat: -5.0855827, lng: -42.8034291, name:'A'},
+            { lat: -5.0859867, lng: -42.8024221, name:'B'}
         ]
         ,zoom: 15,
     }
@@ -66,20 +58,38 @@ export default class HomeMap extends React.Component {
     }
 
 
-    render() {
-    return (
-        <div className={styles.map_container}>
-            <GoogleMap
-                bootstrapURLKeys={this.props.options}
-                defaultCenter={this.props.location}
-                defaultZoom={this.props.zoom}
-                zoom={this.props.zoom}
-                onChange={this.handleChange.bind(this)}
-            >
-            {this.state.stops}
-            </GoogleMap>
-        </div>
-    );
-  }
+    render(){
+        return (
+            <div className={styles.map_container}>
+                <GoogleMap
+                    bootstrapURLKeys={this.props.options}
+                    defaultCenter={this.props.location}
+                    defaultZoom={this.props.zoom}
+                    zoom={this.props.zoom}
+                    onChange={this.handleChange.bind(this)}
+                >
+                {
+                    this.props.stops.map((marker, i) =>
+                        <Stops {...marker} key={i}/>
+                    )
+                }
+                </GoogleMap>
+            </div>
+        );
+    }
+
 }
+
+const mapStateToProps = (state) => {
+    return { stops: state.toJS().stops };
+};
+
+const mapDispatchToProps = (dispatch) => {
+    return { selectStop: (id) => { dispatch({}) } };
+};
+
+export default connect(
+    mapStateToProps,
+    mapDispatchToProps
+)(HomeMap);
 

@@ -1,13 +1,3 @@
-/**
-    * React Static Boilerplate
-    * https://github.com/kriasoft/react-static-boilerplate
-    *
-    * Copyright © 2015-present Kriasoft, LLC. All rights reserved.
-    *
-    * This source code is licensed under the MIT license found in the
-    * LICENSE.txt file in the root directory of this source tree.
-    */
-
 import { createStore } from 'redux';
 import Immutable from 'immutable';
 
@@ -15,8 +5,10 @@ import Immutable from 'immutable';
 const initialState = Immutable.fromJS({
     busSearch: '',
     stopSearch: '',
-    stops: [],
-    bus: [],
+    stops: [
+        { lat: -5.0855827, lng: -42.8034291, name:'A'},
+        { lat: -5.0859867, lng: -42.8024221, name:'B'}
+    ],
     loading: false
 });
 
@@ -37,6 +29,9 @@ const store = createStore((state = initialState, action) => {
             return state.set('bus', action.data);
         case 'RECEIVE_STOPS':
             return state.set('stops', action.data);
+        case 'SELECT_BUS':
+            console.log(action);
+            return state.set('stops', action.data.stops);
         default:
             return state;
     }
